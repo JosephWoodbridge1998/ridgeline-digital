@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ridgeline Digital — Web design for Berkshire County</title>
+<meta name="description" content="Ridgeline Digital builds websites for small and local businesses across Berkshire County, Massachusetts. Run by one person. No agencies, no hand-offs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep: #0A1B31;
+    --navy: #10233F;
+    --navy-soft: #17304F;
+    --grey-light: #E8EAED;
+    --grey-paper: #F2F3F5;
+    --ink: #16202C;
+    --ink-soft: #4B5866;
+    --line-on-navy: rgba(232,234,237,0.22);
+    --line-on-grey: rgba(16,32,63,0.14);
+    --white: #FFFFFF;
+    --steel: #8CA0B8;
+    --radius: 3px;
+    --ease: cubic-bezier(.22,.68,.32,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--grey-paper);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  p{margin:0;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 40px;
+  }
+  @media (max-width:640px){ .wrap{padding:0 22px;} }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(10,27,49,0.0);
+    transition:background .5s var(--ease), padding .4s var(--ease), border-color .4s var(--ease);
+    padding:28px 0;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(10,27,49,0.92);
+    backdrop-filter:blur(10px);
+    padding:16px 0;
+    border-bottom:1px solid var(--line-on-navy);
+  }
+  header .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    color:var(--white);
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .logo span{
+    color:var(--steel);
+    font-family:'Manrope', sans-serif;
+    font-size:0.72rem;
+    font-weight:600;
+  }
+  nav.links{
+    display:flex;
+    gap:36px;
+  }
+  nav.links a{
+    color:var(--grey-light);
+    font-size:0.92rem;
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav.links a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:0;
+    width:0%;
+    height:1px;
+    background:var(--white);
+    transition:width .35s var(--ease);
+  }
+  nav.links a:hover::after{ width:100%; }
+  .nav-cta{
+    color:var(--white) !important;
+    border:1px solid var(--line-on-navy);
+    padding:9px 18px;
+    border-radius:var(--radius);
+    font-size:0.85rem !important;
+    transition:background .3s var(--ease), border-color .3s var(--ease);
+  }
+  .nav-cta::after{display:none;}
+  .nav-cta:hover{background:rgba(255,255,255,0.08); border-color:var(--steel);}
+  .menu-btn{display:none;}
+
+  @media (max-width:820px){
+    nav.links{display:none;}
+    .menu-btn{
+      display:block;
+      background:none; border:0;
+      color:var(--white);
+      font-size:0.85rem;
+      font-family:'Manrope',sans-serif;
+      border:1px solid var(--line-on-navy);
+      padding:8px 14px;
+      border-radius:var(--radius);
+    }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--navy-deep);
+    color:var(--white);
+    padding:170px 0 100px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:60px;
+    align-items:center;
+  }
+  @media (max-width:900px){
+    .hero .wrap{ grid-template-columns:1fr; }
+  }
+
+  .eyebrow-line{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:26px;
+    opacity:0;
+    animation:fadeIn .8s var(--ease) .2s forwards;
+  }
+  .eyebrow-line .dash{ width:34px; height:1px; background:var(--steel); }
+  .eyebrow-line span{ font-size:0.85rem; color:var(--steel); }
+
+  .hero h1{
+    font-size:clamp(2.4rem, 4.6vw, 3.6rem);
+    line-height:1.12;
+    color:var(--white);
+    max-width:15ch;
+    opacity:0;
+    transform:translateY(16px);
+    animation:riseIn 1s var(--ease) .35s forwards;
+  }
+  .hero h1 em{ font-style:italic; color:var(--steel); }
+
+  .hero p.lede{
+    margin-top:26px;
+    max-width:44ch;
+    color:var(--grey-light);
+    font-size:1.05rem;
+    opacity:0;
+    transform:translateY(16px);
+    animation:riseIn 1s var(--ease) .55s forwards;
+  }
+
+  .hero-actions{
+    margin-top:40px;
+    display:flex;
+    gap:18px;
+    align-items:center;
+    flex-wrap:wrap;
+    opacity:0;
+    transform:translateY(16px);
+    animation:riseIn 1s var(--ease) .72s forwards;
+  }
+
+  .btn-primary{
+    background:var(--white);
+    color:var(--navy-deep);
+    padding:14px 26px;
+    border-radius:var(--radius);
+    font-weight:600;
+    font-size:0.95rem;
+    display:inline-block;
+    transition:transform .35s var(--ease), background .35s var(--ease);
+  }
+  .btn-primary:hover{ background:var(--grey-light); transform:translateY(-2px); }
+
+  .btn-ghost{
+    color:var(--white);
+    font-size:0.95rem;
+    padding-bottom:2px;
+    border-bottom:1px solid var(--line-on-navy);
+    transition:border-color .3s var(--ease);
+  }
+  .btn-ghost:hover{ border-color:var(--white); }
+
+  .hero-figure{ position:relative; height:280px; }
+  .hero-figure svg{ width:100%; height:100%; overflow:visible; }
+  .ridge-path{
+    fill:none;
+    stroke:var(--steel);
+    stroke-width:1.4;
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw 2.2s var(--ease) .3s forwards;
+  }
+  .ridge-fill{
+    fill:var(--navy-soft);
+    opacity:0;
+    animation:fadeIn 1.4s var(--ease) 1.2s forwards;
+  }
+  .ridge-dot{
+    fill:var(--white);
+    opacity:0;
+    animation:fadeIn .6s var(--ease) 2.1s forwards;
+  }
+
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes fadeIn{ to{ opacity:1; } }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+
+  .hero-foot{
+    margin-top:90px;
+    padding-top:26px;
+    border-top:1px solid var(--line-on-navy);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    font-size:0.85rem;
+    color:var(--steel);
+  }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{ padding:120px 0; }
+  @media (max-width:640px){ section{ padding:80px 0; } }
+
+  .section-head{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:40px;
+    margin-bottom:64px;
+  }
+  @media (max-width:760px){ .section-head{ grid-template-columns:1fr; gap:18px; } }
+  .section-head h2{
+    font-size:clamp(1.7rem, 3vw, 2.3rem);
+    color:var(--navy);
+  }
+  .section-head .desc{ color:var(--ink-soft); max-width:46ch; align-self:end; }
+
+  /* ---------- SERVICES (light grey) ---------- */
+  .services{ background:var(--grey-paper); }
+  .service-row{
+    display:grid;
+    grid-template-columns:1.4fr 2fr 1fr;
+    gap:30px;
+    padding:34px 0;
+    border-top:1px solid var(--line-on-grey);
+    align-items:baseline;
+    transition:padding-left .35s var(--ease);
+  }
+  .service-row:last-child{ border-bottom:1px solid var(--line-on-grey); }
+  .service-row:hover{ padding-left:10px; }
+  .service-row h3{ font-size:1.25rem; color:var(--navy); }
+  .service-row p{ color:var(--ink-soft); }
+  .service-row .tag{
+    color:var(--steel);
+    font-size:0.85rem;
+    text-align:right;
+  }
+  @media (max-width:760px){
+    .service-row{ grid-template-columns:1fr; gap:8px; }
+    .service-row .tag{ text-align:left; }
+  }
+
+  /* ---------- PERSONAL / SOLO SECTION (navy) ---------- */
+  .personal{ background:var(--navy); color:var(--white); }
+  .personal .wrap{
+    display:grid;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:70px;
+    align-items:center;
+  }
+  @media (max-width:820px){ .personal .wrap{ grid-template-columns:1fr; gap:36px; } }
+
+  .portrait{
+    width:100%;
+    aspect-ratio:4/5;
+    background:
+      linear-gradient(160deg, rgba(232,234,237,0.10), transparent 60%),
+      var(--navy-soft);
+    border:1px solid var(--line-on-navy);
+    border-radius:var(--radius);
+    position:relative;
+    overflow:hidden;
+  }
+  .portrait::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(232,234,237,0.05) 0 2px, transparent 2px 26px);
+  }
+  .portrait .initials{
+    position:absolute;
+    bottom:26px; left:26px;
+    font-family:'Fraunces', serif;
+    font-size:2.6rem;
+    color:var(--white);
+  }
+
+  .personal blockquote{
+    font-family:'Fraunces', serif;
+    font-size:clamp(1.3rem, 2.4vw, 1.7rem);
+    font-style:italic;
+    line-height:1.5;
+    color:var(--white);
+    margin:0 0 28px;
+  }
+  .personal .signature{
+    color:var(--steel);
+    font-size:0.95rem;
+    margin-bottom:34px;
+  }
+  .personal .fact-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    border-top:1px solid var(--line-on-navy);
+    padding-top:28px;
+  }
+  .personal .fact-grid div b{
+    display:block;
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    color:var(--white);
+    margin-bottom:4px;
+  }
+  .personal .fact-grid div span{ color:var(--steel); font-size:0.85rem; }
+  @media (max-width:520px){ .personal .fact-grid{ grid-template-columns:1fr; gap:16px; } }
+
+  /* ---------- PROCESS ---------- */
+  .process{ background:var(--grey-paper); }
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    position:relative;
+  }
+  .steps::before{
+    content:'';
+    position:absolute;
+    top:19px; left:0; right:0;
+    height:1px;
+    background:var(--line-on-grey);
+  }
+  @media (max-width:820px){
+    .steps{ grid-template-columns:1fr; gap:36px; }
+    .steps::before{ display:none; }
+  }
+  .step{ position:relative; padding-right:24px; }
+  .step .num{
+    width:38px; height:38px;
+    border-radius:50%;
+    background:var(--grey-paper);
+    border:1px solid var(--navy);
+    color:var(--navy);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-size:0.95rem;
+    margin-bottom:22px;
+    position:relative;
+    z-index:1;
+  }
+  .step h3{ font-size:1.1rem; color:var(--navy); margin-bottom:10px; }
+  .step p{ color:var(--ink-soft); font-size:0.95rem; }
+
+  /* ---------- LOCAL AREA ---------- */
+  .local{ background:var(--navy-deep); color:var(--white); }
+  .local .wrap{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:60px;
+  }
+  @media (max-width:820px){ .local .wrap{ grid-template-columns:1fr; gap:32px; } }
+  .local h2{ color:var(--white); font-size:clamp(1.7rem,3vw,2.2rem); max-width:12ch; }
+  .local .desc{ color:var(--grey-light); margin-top:20px; max-width:40ch; }
+  .town-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-content:flex-start;
+  }
+  .town-list span{
+    border:1px solid var(--line-on-navy);
+    padding:10px 18px;
+    border-radius:20px;
+    font-size:0.9rem;
+    color:var(--grey-light);
+    transition:border-color .3s var(--ease), color .3s var(--ease);
+  }
+  .town-list span:hover{ border-color:var(--white); color:var(--white); }
+
+  /* ---------- TESTIMONIAL ---------- */
+  .testimonial{ background:var(--grey-paper); text-align:left; }
+  .testimonial .wrap{ max-width:760px; }
+  .testimonial blockquote{
+    font-family:'Fraunces', serif;
+    font-size:clamp(1.5rem, 3vw, 2.1rem);
+    color:var(--navy);
+    line-height:1.4;
+    margin:0 0 30px;
+  }
+  .testimonial .who{ display:flex; align-items:center; gap:14px; }
+  .testimonial .avatar{
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--navy);
+  }
+  .testimonial .who b{ display:block; color:var(--navy); font-size:0.95rem; }
+  .testimonial .who span{ color:var(--ink-soft); font-size:0.85rem; }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{ background:var(--navy); color:var(--white); padding-top:120px; }
+  .contact .wrap{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:70px;
+  }
+  @media (max-width:820px){ .contact .wrap{ grid-template-columns:1fr; gap:40px; } }
+  .contact h2{ color:var(--white); font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:12ch; }
+  .contact .desc{ color:var(--grey-light); margin-top:22px; max-width:38ch; }
+  .contact .email{
+    display:inline-block;
+    margin-top:32px;
+    font-size:1.1rem;
+    border-bottom:1px solid var(--line-on-navy);
+    padding-bottom:4px;
+    transition:border-color .3s var(--ease);
+  }
+  .contact .email:hover{ border-color:var(--white); }
+
+  form.contact-form{ display:flex; flex-direction:column; gap:22px; }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .field label{ font-size:0.85rem; color:var(--steel); }
+  .field input, .field textarea{
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line-on-navy);
+    color:var(--white);
+    font-family:'Manrope', sans-serif;
+    font-size:1rem;
+    padding:10px 2px;
+    transition:border-color .3s var(--ease);
+    resize:none;
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-color:var(--white);
+  }
+  .field input::placeholder, .field textarea::placeholder{ color:rgba(232,234,237,0.4); }
+  .submit-btn{
+    align-self:flex-start;
+    margin-top:6px;
+    background:var(--white);
+    color:var(--navy-deep);
+    padding:14px 30px;
+    border:none;
+    border-radius:var(--radius);
+    font-family:'Manrope', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:transform .35s var(--ease), background .35s var(--ease);
+  }
+  .submit-btn:hover{ background:var(--grey-light); transform:translateY(-2px); }
+  .form-note{ font-size:0.82rem; color:var(--steel); margin-top:2px; }
+
+  .foot-bottom{
+    margin-top:110px;
+    border-top:1px solid var(--line-on-navy);
+    padding:28px 0;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    font-size:0.85rem;
+    color:var(--steel);
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--steel);
+    outline-offset:3px;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <a class="logo" href="#top">Ridgeline <span>DIGITAL</span></a>
+    <nav class="links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#process">Process</a>
+      <a href="#area">Coverage</a>
+      <a href="#contact" class="nav-cta">Start a project</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow-line"><span class="dash"></span><span>Web design &amp; development · Berkshire County, MA</span></div>
+        <h1>Websites built for the businesses that <em>make this county work.</em></h1>
+        <p class="lede">Ridgeline Digital is a one-person studio designing and building websites for shops, restaurants, contractors and practices across the Berkshires — no account managers, no outsourced work, just the person who builds your site.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">Start a project</a>
+          <a href="#services" class="btn-ghost">See what's included</a>
+        </div>
+      </div>
+      <div class="hero-figure" aria-hidden="true">
+        <svg viewBox="0 0 420 300" preserveAspectRatio="xMidYMid meet">
+          <path class="ridge-fill" d="M0,300 L0,190 L55,140 L100,175 L150,95 L190,150 L235,70 L280,160 L330,120 L370,175 L420,150 L420,300 Z"></path>
+          <path class="ridge-path" d="M0,190 L55,140 L100,175 L150,95 L190,150 L235,70 L280,160 L330,120 L370,175 L420,150"></path>
+          <circle class="ridge-dot" cx="235" cy="70" r="4"></circle>
+        </svg>
+      </div>
+    </div>
+    <div class="wrap hero-foot">
+      <span>Based in Pittsfield, MA — working countywide</span>
+      <span>Currently booking projects for Q1</span>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What I build</h2>
+        <p class="desc">Every project is scoped, designed and coded by hand — sized to what a small business actually needs, not what an agency needs to bill.</p>
+      </div>
+
+      <div class="service-row">
+        <h3>New websites</h3>
+        <p>A custom-designed site built from scratch around your business, your services and how people actually find you locally.</p>
+        <span class="tag">From concept to launch</span>
+      </div>
+      <div class="service-row">
+        <h3>Redesigns</h3>
+        <p>Replacing an outdated template or an old builder site with something faster, clearer, and easier for you to update yourself.</p>
+        <span class="tag">Rebuilt, not patched</span>
+      </div>
+      <div class="service-row">
+        <h3>Local SEO setup</h3>
+        <p>Getting your business found in Berkshire County searches — proper structure, listings, and a site Google can actually read.</p>
+        <span class="tag">Built in, not bolted on</span>
+      </div>
+      <div class="service-row">
+        <h3>Ongoing care</h3>
+        <p>Monthly upkeep, small edits and hosting management, so the site keeps working long after launch day.</p>
+        <span class="tag">Month to month</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="personal" id="about">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="portrait">
+          <div class="initials">JH</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <blockquote>"I only take on projects I can give real attention to — which is why I keep it to one person, one client at a time."</blockquote>
+        <p class="signature">Jordan Hale, founder &amp; the person who builds your site</p>
+        <div class="fact-grid">
+          <div><b>7 yrs</b><span>Building for small business</span></div>
+          <div><b>1</b><span>Person on every project</span></div>
+          <div><b>40+</b><span>Berkshire County clients</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How a project runs</h2>
+        <p class="desc">Four stages, one point of contact throughout. You'll always know what's happening and when.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">01</div>
+          <h3>Conversation</h3>
+          <p>A call or visit to understand your business, your customers, and what the site needs to do.</p>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h3>Design</h3>
+          <p>A layout and look built around your business specifically — you review and shape it before anything's built.</p>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h3>Build</h3>
+          <p>Hand-coded, fast, and tested on real phones and laptops — not just previewed in a builder.</p>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <h3>Launch &amp; care</h3>
+          <p>Site goes live, you get shown how to edit it, and I stay reachable after launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="local" id="area">
+    <div class="wrap">
+      <div>
+        <h2>Working across the county</h2>
+        <p class="desc">Based in Pittsfield and working with business owners throughout Berkshire County — often in person, always directly.</p>
+      </div>
+      <div class="town-list">
+        <span>Pittsfield</span>
+        <span>Great Barrington</span>
+        <span>Lenox</span>
+        <span>North Adams</span>
+        <span>Williamstown</span>
+        <span>Stockbridge</span>
+        <span>Lee</span>
+        <span>Adams</span>
+        <span>Sheffield</span>
+        <span>Dalton</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial">
+    <div class="wrap">
+      <blockquote>"He redid our site in a month, actually explained what he changed, and our phone bookings picked up almost right away. It felt like working with someone who lives here, not a call centre."</blockquote>
+      <div class="who">
+        <div class="avatar"></div>
+        <div>
+          <b>Maria Coelho</b>
+          <span>Owner, Coelho's Family Kitchen — Great Barrington</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap contact">
+    <div>
+      <h2>Tell me about your business</h2>
+      <p class="desc">Send a few details and I'll reply within a day or two — usually with a couple of questions before we talk pricing.</p>
+      <a class="email" href="mailto:jordan@ridgelinedigital.co">jordan@ridgelinedigital.co</a>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Sent — talk soon';">
+      <div class="field">
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Your name" required>
+      </div>
+      <div class="field">
+        <label for="business">Business name</label>
+        <input id="business" type="text" placeholder="Your business">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@business.com" required>
+      </div>
+      <div class="field">
+        <label for="message">What do you need?</label>
+        <textarea id="message" rows="4" placeholder="A new site, a redesign, something else..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send message</button>
+      <p class="form-note">This form is a front-end demo — connect it to your email or a form service before launch.</p>
+    </form>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 Ridgeline Digital. Pittsfield, MA.</span>
+    <span>Built by hand, one client at a time.</span>
+  </div>
+</footer>
+
+<script>
+  // Sticky header state
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => {
+    if (window.scrollY > 40) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Single reveal moment for the "about" portrait/quote block
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Simple mobile menu fallback: jump to contact if menu button pressed
+  const menuBtn = document.getElementById('menuBtn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => {
+      document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+</script>
+
+</body>
+</html>
